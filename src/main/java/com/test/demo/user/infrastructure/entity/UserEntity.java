@@ -1,4 +1,4 @@
-package com.test.demo.user.repository.entity;
+package com.test.demo.user.infrastructure.entity;
 
 import com.test.demo.user.domain.enums.UserStatus;
 import jakarta.persistence.*;

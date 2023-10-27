@@ -1,6 +1,6 @@
-package com.test.demo.post.repository.entity;
+package com.test.demo.post.infrastructure.entity;
 
-import com.test.demo.user.repository.entity.UserEntity;
+import com.test.demo.user.infrastructure.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

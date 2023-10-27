@@ -1,7 +1,7 @@
 package com.test.demo.user.service.port;
 
 import com.test.demo.user.domain.enums.UserStatus;
-import com.test.demo.user.repository.entity.UserEntity;
+import com.test.demo.user.infrastructure.entity.UserEntity;
 
 import java.util.Optional;
 

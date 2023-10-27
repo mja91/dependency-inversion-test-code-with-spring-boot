@@ -1,4 +1,4 @@
-package com.test.demo.post.repository;
+package com.test.demo.post.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
