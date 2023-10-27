@@ -1,4 +1,4 @@
-package com.test.demo.controller;
+package com.test.demo.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.demo.user.domain.dto.request.UserCreateDto;

@@ -3,7 +3,7 @@ package com.test.demo.user.controller;
 import com.test.demo.user.domain.dto.response.MyProfileResponseDto;
 import com.test.demo.user.domain.dto.response.UserResponseDto;
 import com.test.demo.user.domain.dto.request.UserUpdateDto;
-import com.test.demo.user.infrastructure.entity.UserEntity;
+import com.test.demo.user.repository.entity.UserEntity;
 import com.test.demo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
