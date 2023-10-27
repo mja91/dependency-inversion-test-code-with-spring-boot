@@ -4,7 +4,7 @@ import com.test.demo.common.domain.exception.ResourceNotFoundException;
 import com.test.demo.post.domain.dto.reqeust.PostCreateDto;
 import com.test.demo.post.domain.dto.reqeust.PostUpdateDto;
 import com.test.demo.post.repository.entity.PostEntity;
-import com.test.demo.post.repository.PostRepository;
+import com.test.demo.post.repository.PostJpaRepository;
 import com.test.demo.user.repository.entity.UserEntity;
 import com.test.demo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +16,11 @@ import java.time.Clock;
 @RequiredArgsConstructor
 public class PostService {
 
-    private final PostRepository postRepository;
+    private final PostJpaRepository postJpaRepository;
     private final UserService userService;
 
     public PostEntity getById(long id) {
-        return postRepository.findById(id)
+        return postJpaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Posts", id));
     }
 
@@ -30,13 +30,13 @@ public class PostService {
         postEntity.setWriter(userEntity);
         postEntity.setContent(postCreateDto.getContent());
         postEntity.setCreatedAt(Clock.systemUTC().millis());
-        return postRepository.save(postEntity);
+        return postJpaRepository.save(postEntity);
     }
 
     public PostEntity update(long id, PostUpdateDto postUpdateDto) {
         PostEntity postEntity = getById(id);
         postEntity.setContent(postUpdateDto.getContent());
         postEntity.setModifiedAt(Clock.systemUTC().millis());
-        return postRepository.save(postEntity);
+        return postJpaRepository.save(postEntity);
     }
 }

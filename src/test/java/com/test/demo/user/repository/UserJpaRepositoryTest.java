@@ -19,10 +19,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @TestPropertySource(
     locations = "classpath:application-test.properties")
 @Sql("/sql/user-repository-test-data.sql")
-public class UserRepositoryTest {
+public class UserJpaRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userRepository;
 
     @Test
     void findByIdAndStatus_로_유저_데이터를_찾아올_수_있다() {
