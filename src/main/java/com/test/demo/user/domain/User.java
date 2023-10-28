@@ -1,6 +1,8 @@
 package com.test.demo.user.domain;
 
 import com.test.demo.common.domain.exception.CertificationCodeNotMatchedException;
+import com.test.demo.common.service.port.ClockHolder;
+import com.test.demo.common.service.port.UuidHolder;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
@@ -29,11 +31,13 @@ public class User {
         this.lastLoginAt = lastLoginAt;
     }
 
-    public static User from(UserCreateDto userCreateDto) {
+    public static User from(UserCreateDto userCreateDto, UuidHolder uuidHolder) {
         return User.builder()
             .email(userCreateDto.getEmail())
             .nickname(userCreateDto.getNickname())
             .address(userCreateDto.getAddress())
+            .status(UserStatus.PENDING)
+            .certificationCode(uuidHolder.random())
             .build();
     }
 
@@ -49,7 +53,7 @@ public class User {
             .build();
     }
 
-    public User login() {
+    public User login(ClockHolder clockHolder) {
         return User.builder()
             .id(id)
             .email(email)
@@ -57,7 +61,7 @@ public class User {
             .address(address)
             .certificationCode(certificationCode)
             .status(UserStatus.ACTIVE)
-            .lastLoginAt(System.currentTimeMillis())
+            .lastLoginAt(clockHolder.millis())
             .build();
     }
 

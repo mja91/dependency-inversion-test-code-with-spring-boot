@@ -28,7 +28,7 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable long id) {
         return ResponseEntity
             .ok()
-            .body(UserResponseDto.toResponse(userService.getById(id)));
+            .body(UserResponseDto.from(userService.getById(id)));
     }
 
     @GetMapping("/{id}/verify")

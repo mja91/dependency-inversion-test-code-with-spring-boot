@@ -14,7 +14,7 @@ public class UserResponseDto {
     private UserStatus status;
     private Long lastLoginAt;
 
-    public static UserResponseDto toResponse(User user) {
+    public static UserResponseDto from(User user) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())

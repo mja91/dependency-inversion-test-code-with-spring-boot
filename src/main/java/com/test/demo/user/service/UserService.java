@@ -1,6 +1,8 @@
 package com.test.demo.user.service;
 
 import com.test.demo.common.domain.exception.ResourceNotFoundException;
+import com.test.demo.common.service.port.ClockHolder;
+import com.test.demo.common.service.port.UuidHolder;
 import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
@@ -17,6 +19,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CertificationService certificationService;
+    private final UuidHolder uuidHolder;
+    private final ClockHolder clockHolder;
 
     public User getByEmail(String email) {
         return userRepository.findByEmailAndStatus(email, UserStatus.ACTIVE)
@@ -30,7 +34,7 @@ public class UserService {
 
     @Transactional
     public User create(UserCreateDto userCreateDto) {
-        User user = User.from(userCreateDto);
+        User user = User.from(userCreateDto, uuidHolder);
         user = userRepository.save(UserEntity.fromModel(user).toModel());
         certificationService.send(user.getEmail(), user.getId(), user.getCertificationCode());
         return user;
@@ -47,7 +51,7 @@ public class UserService {
     @Transactional
     public void login(long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Users", id));
-        user = user.login();
+        user = user.login(clockHolder);
         userRepository.save(user);
     }
 
