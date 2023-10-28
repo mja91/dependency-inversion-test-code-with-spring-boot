@@ -1,7 +1,7 @@
 package com.test.demo.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.demo.user.domain.dto.request.UserCreateDto;
+import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.enums.UserStatus;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;

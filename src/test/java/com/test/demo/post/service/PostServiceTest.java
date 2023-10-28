@@ -1,8 +1,8 @@
 package com.test.demo.post.service;
 
 import com.test.demo.common.domain.exception.ResourceNotFoundException;
-import com.test.demo.post.domain.dto.reqeust.PostCreateDto;
-import com.test.demo.post.domain.dto.reqeust.PostUpdateDto;
+import com.test.demo.post.domain.request.PostCreateDto;
+import com.test.demo.post.domain.request.PostUpdateDto;
 import com.test.demo.post.infrastructure.entity.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

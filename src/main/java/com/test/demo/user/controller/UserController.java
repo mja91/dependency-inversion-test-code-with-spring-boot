@@ -1,9 +1,9 @@
 package com.test.demo.user.controller;
 
-import com.test.demo.user.domain.dto.response.MyProfileResponseDto;
-import com.test.demo.user.domain.dto.response.UserResponseDto;
-import com.test.demo.user.domain.dto.request.UserUpdateDto;
-import com.test.demo.user.infrastructure.entity.UserEntity;
+import com.test.demo.user.domain.User;
+import com.test.demo.user.controller.response.MyProfileResponseDto;
+import com.test.demo.user.controller.response.UserResponseDto;
+import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
@@ -28,7 +28,7 @@ public class UserController {
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable long id) {
         return ResponseEntity
             .ok()
-            .body(toResponse(userService.getById(id)));
+            .body(UserResponseDto.toResponse(userService.getById(id)));
     }
 
     @GetMapping("/{id}/verify")
@@ -46,11 +46,11 @@ public class UserController {
         @Parameter(name = "EMAIL", in = ParameterIn.HEADER)
         @RequestHeader("EMAIL") String email // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져온다.
     ) {
-        UserEntity userEntity = userService.getByEmail(email);
-        userService.login(userEntity.getId());
+        User user = userService.getByEmail(email);
+        userService.login(user.getId());
         return ResponseEntity
             .ok()
-            .body(toMyProfileResponse(userEntity));
+            .body(MyProfileResponseDto.from(user));
     }
 
     @PutMapping("/me")
@@ -60,31 +60,10 @@ public class UserController {
         @RequestHeader("EMAIL") String email, // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져온다.
         @RequestBody UserUpdateDto userUpdateDto
     ) {
-        UserEntity userEntity = userService.getByEmail(email);
-        userEntity = userService.update(userEntity.getId(), userUpdateDto);
+        User user = userService.getByEmail(email);
+        user = userService.update(user.getId(), userUpdateDto);
         return ResponseEntity
             .ok()
-            .body(toMyProfileResponse(userEntity));
-    }
-
-    public UserResponseDto toResponse(UserEntity userEntity) {
-        UserResponseDto userResponse = new UserResponseDto();
-        userResponse.setId(userEntity.getId());
-        userResponse.setEmail(userEntity.getEmail());
-        userResponse.setNickname(userEntity.getNickname());
-        userResponse.setStatus(userEntity.getStatus());
-        userResponse.setLastLoginAt(userEntity.getLastLoginAt());
-        return userResponse;
-    }
-
-    public MyProfileResponseDto toMyProfileResponse(UserEntity userEntity) {
-        MyProfileResponseDto myProfileResponse = new MyProfileResponseDto();
-        myProfileResponse.setId(userEntity.getId());
-        myProfileResponse.setEmail(userEntity.getEmail());
-        myProfileResponse.setNickname(userEntity.getNickname());
-        myProfileResponse.setStatus(userEntity.getStatus());
-        myProfileResponse.setAddress(userEntity.getAddress());
-        myProfileResponse.setLastLoginAt(userEntity.getLastLoginAt());
-        return myProfileResponse;
+            .body(MyProfileResponseDto.from(user));
     }
 }

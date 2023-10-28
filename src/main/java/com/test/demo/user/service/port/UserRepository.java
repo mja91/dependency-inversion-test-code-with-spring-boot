@@ -1,18 +1,18 @@
 package com.test.demo.user.service.port;
 
+import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.enums.UserStatus;
-import com.test.demo.user.infrastructure.entity.UserEntity;
 
 import java.util.Optional;
 
 public interface UserRepository {
 
-    Optional<UserEntity> findById(long id);
+    Optional<User> findById(long id);
 
-    Optional<UserEntity> findByIdAndStatus(long id, UserStatus userStatus);
+    Optional<User> findByIdAndStatus(long id, UserStatus userStatus);
 
-    Optional<UserEntity> findByEmailAndStatus(String email, UserStatus userStatus);
+    Optional<User> findByEmailAndStatus(String email, UserStatus userStatus);
 
-    UserEntity save(UserEntity userEntity);
+    User save(User user);
 
 }

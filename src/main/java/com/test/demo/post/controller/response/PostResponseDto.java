@@ -1,6 +1,6 @@
-package com.test.demo.post.domain.dto.response;
+package com.test.demo.post.controller.response;
 
-import com.test.demo.user.domain.dto.response.UserResponseDto;
+import com.test.demo.user.controller.response.UserResponseDto;
 import lombok.Getter;
 import lombok.Setter;
 

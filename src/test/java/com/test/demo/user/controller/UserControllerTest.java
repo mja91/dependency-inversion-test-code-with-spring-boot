@@ -1,7 +1,7 @@
 package com.test.demo.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.demo.user.domain.dto.request.UserUpdateDto;
+import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
 import com.test.demo.user.infrastructure.entity.UserEntity;
 import com.test.demo.user.service.UserService;

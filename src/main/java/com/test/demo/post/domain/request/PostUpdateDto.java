@@ -1,4 +1,4 @@
-package com.test.demo.post.domain.dto.reqeust;
+package com.test.demo.post.domain.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;

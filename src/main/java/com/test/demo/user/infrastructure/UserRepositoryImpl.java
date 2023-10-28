@@ -1,5 +1,6 @@
 package com.test.demo.user.infrastructure;
 
+import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.enums.UserStatus;
 import com.test.demo.user.infrastructure.entity.UserEntity;
 import com.test.demo.user.service.port.UserRepository;
@@ -15,23 +16,23 @@ public class UserRepositoryImpl implements UserRepository {
     private final UserJpaRepository userJpaRepository;
 
     @Override
-    public Optional<UserEntity> findById(long id) {
-        return userJpaRepository.findById(id);
+    public Optional<User> findById(long id) {
+        return userJpaRepository.findById(id).map(UserEntity::toModel);
     }
 
     @Override
-    public Optional<UserEntity> findByIdAndStatus(long id, UserStatus userStatus) {
-        return userJpaRepository.findByIdAndStatus(id, userStatus);
+    public Optional<User> findByIdAndStatus(long id, UserStatus userStatus) {
+        return userJpaRepository.findByIdAndStatus(id, userStatus).map(UserEntity::toModel);
     }
 
     @Override
-    public Optional<UserEntity> findByEmailAndStatus(String email, UserStatus userStatus) {
-        return userJpaRepository.findByEmailAndStatus(email, userStatus);
+    public Optional<User> findByEmailAndStatus(String email, UserStatus userStatus) {
+        return userJpaRepository.findByEmailAndStatus(email, userStatus).map(UserEntity::toModel);
     }
 
     @Override
-    public UserEntity save(UserEntity userEntity) {
-        return userJpaRepository.save(userEntity);
+    public User save(User user) {
+        return userJpaRepository.save(UserEntity.fromModel(user)).toModel();
     }
 
 }
