@@ -1,6 +1,7 @@
 package com.test.demo.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
 import com.test.demo.user.infrastructure.entity.UserEntity;
@@ -70,8 +71,8 @@ public class UserControllerTest {
                         .queryParam("certificationCode", "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
                 .andExpect(status().isFound());
 
-        UserEntity userEntity = userService.getById(2L);
-        assertThat(userEntity.getStatus()).isEqualTo(UserStatus.ACTIVE);
+        User user = userService.getById(2L);
+        assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);
     }
 
     @Test
