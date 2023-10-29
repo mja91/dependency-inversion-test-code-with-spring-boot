@@ -74,7 +74,7 @@ public class UserTest {
         User user = createPendingStatusTestUser();
 
         // when
-        user.certificate("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        user = user.certificate("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
         // then
         assertThat(user.getStatus()).isEqualTo(UserStatus.ACTIVE);

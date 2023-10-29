@@ -6,6 +6,7 @@ import com.test.demo.common.service.port.UuidHolder;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
+import com.test.demo.user.infrastructure.entity.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -66,7 +67,7 @@ public class User {
     }
 
     public User certificate(String certificationCode) {
-        if (this.certificationCode.equals(certificationCode)) {
+        if (!this.certificationCode.equals(certificationCode)) {
             throw new CertificationCodeNotMatchedException();
         }
 

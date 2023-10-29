@@ -9,12 +9,14 @@ import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
 import com.test.demo.user.infrastructure.entity.UserEntity;
 import com.test.demo.user.service.port.UserRepository;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Builder
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
     private final UserRepository userRepository;
@@ -43,7 +45,7 @@ public class UserService {
     @Transactional
     public User update(long id, UserUpdateDto userUpdateDto) {
         User user = getById(id);
-        user.update(userUpdateDto);
+        user = user.update(userUpdateDto);
         user = userRepository.save(user);
         return user;
     }

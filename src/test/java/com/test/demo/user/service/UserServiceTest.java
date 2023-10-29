@@ -2,38 +2,53 @@ package com.test.demo.user.service;
 
 import com.test.demo.common.domain.exception.CertificationCodeNotMatchedException;
 import com.test.demo.common.domain.exception.ResourceNotFoundException;
+import com.test.demo.mock.FakeMailSender;
+import com.test.demo.mock.FakeUserRepository;
+import com.test.demo.mock.TestClockHolder;
+import com.test.demo.mock.TestUuidHolder;
 import com.test.demo.user.domain.User;
+import com.test.demo.user.domain.enums.UserStatus;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
-import com.test.demo.user.domain.enums.UserStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 
-@SpringBootTest
-@TestPropertySource(locations = "classpath:test-application.yml")
-@SqlGroup({
-        @Sql("/sql/user-service-test-data.sql"),
-        @Sql("/sql/delete-all-data.sql")
-})
 public class UserServiceTest {
 
-    @Autowired
     private UserService userService;
 
-    @MockBean
-    private JavaMailSender mailSender;
+    @BeforeEach
+    void init() {
+        FakeMailSender fakeMailSender = new FakeMailSender();
+        FakeUserRepository fakeUserRepository = new FakeUserRepository();
+        userService = UserService.builder()
+                .userRepository(fakeUserRepository)
+                .uuidHolder(new TestUuidHolder("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"))
+                .clockHolder(new TestClockHolder(1678530673958L))
+                .certificationService(new CertificationService(fakeMailSender))
+                .build();
+        fakeUserRepository.save(User.builder()
+                .id(1L)
+                .email("tester@test.com")
+                .nickname("tester")
+                .address("Seoul")
+                .status(UserStatus.ACTIVE)
+                .lastLoginAt(1678530673958L)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .build());
+        fakeUserRepository.save(User.builder()
+                .id(2L)
+                .email("tester2@test.com")
+                .nickname("tester2")
+                .address("Jeju")
+                .status(UserStatus.PENDING)
+                .lastLoginAt(1678530673958L)
+                .certificationCode("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                .build());
+    }
 
     @Test
     void getByEamil은_ACTIVE_상태인_유저를_찾아올_수_있다() {
@@ -87,7 +102,6 @@ public class UserServiceTest {
                 .nickname("tester3")
                 .address("Seoul")
                 .build();
-        BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         // when
         User user = userService.create(userCreateDto);
@@ -126,14 +140,14 @@ public class UserServiceTest {
 
         // then
         User user = userService.getById(1);
-        assertThat(user.getLastLoginAt()).isGreaterThan(0L);
+        assertThat(user.getLastLoginAt()).isEqualTo(1678530673958L);
     }
 
     @Test
     void PENDING_상태의_사용자는_이메일_인증_코드로_ACTIVE_시킬_수_있다() {
         // given
         // when
-        userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
+        userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
 
         // then
         User user = userService.getById(2);
@@ -146,7 +160,7 @@ public class UserServiceTest {
         // when
         // then
         assertThatThrownBy(() -> {
-            userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaac");
+            userService.verifyEmail(2, "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaab");
         }).isInstanceOf(CertificationCodeNotMatchedException.class);
     }
 

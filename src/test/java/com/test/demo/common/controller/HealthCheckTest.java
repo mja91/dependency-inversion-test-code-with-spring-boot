@@ -19,8 +19,8 @@ public class HealthCheckTest {
     private MockMvc mockMvc;
 
     @Test
-    void 헬스_체크_시_응답으로_200을_반환한다() throws Exception {
+    void 헬스_체크_시_응답으로_200OK를_반환한다() throws Exception {
         mockMvc.perform(get("/health_check.html"))
-            .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 }
