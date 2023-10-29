@@ -1,12 +1,13 @@
 package com.test.demo.user.service;
 
+import com.test.demo.user.controller.port.CertificationService;
 import com.test.demo.user.service.port.MailSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class CertificationService {
+public class CertificationServiceImpl implements CertificationService {
 
     private final MailSender mailSender;
 

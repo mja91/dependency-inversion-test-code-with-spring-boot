@@ -16,6 +16,14 @@ public class FakeUserRepository implements UserRepository {
     List<User> userList = new ArrayList<>();
 
     @Override
+    public User getById(long id) {
+        return userList.stream()
+                .filter(u -> u.getId().equals(id))
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
     public Optional<User> findById(long id) {
         return userList.stream()
                 .filter(u -> u.getId().equals(id))
@@ -46,6 +54,7 @@ public class FakeUserRepository implements UserRepository {
                     .address(user.getAddress())
                     .status(user.getStatus())
                     .lastLoginAt(user.getLastLoginAt())
+                    .certificationCode(user.getCertificationCode())
                     .build();
             userList.add(newUser);
             return newUser;

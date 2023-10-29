@@ -1,26 +1,23 @@
 package com.test.demo.common.controller;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureTestDatabase
+
 public class HealthCheckTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
     @Test
-    void 헬스_체크_시_응답으로_200OK를_반환한다() throws Exception {
-        mockMvc.perform(get("/health_check.html"))
-                .andExpect(status().isOk());
+    void 헬스_체크_시_응답으로_200OK를_반환한다() {
+        // given
+        HealthCheckController healthCheckController = new HealthCheckController();
+
+        // when
+        ResponseEntity<Void> result = healthCheckController.healthCheck();
+
+        // then
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(200));
     }
 }

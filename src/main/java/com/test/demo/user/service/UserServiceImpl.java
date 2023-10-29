@@ -3,6 +3,7 @@ package com.test.demo.user.service;
 import com.test.demo.common.domain.exception.ResourceNotFoundException;
 import com.test.demo.common.service.port.ClockHolder;
 import com.test.demo.common.service.port.UuidHolder;
+import com.test.demo.user.controller.port.*;
 import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
@@ -17,10 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Builder
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserServiceImpl implements UserReadService, UserCreateService, UserUpdateService, AuthenticationService {
 
     private final UserRepository userRepository;
-    private final CertificationService certificationService;
+    private final CertificationServiceImpl certificationServiceImpl;
     private final UuidHolder uuidHolder;
     private final ClockHolder clockHolder;
 
@@ -37,8 +38,8 @@ public class UserService {
     @Transactional
     public User create(UserCreateDto userCreateDto) {
         User user = User.from(userCreateDto, uuidHolder);
-        user = userRepository.save(UserEntity.fromModel(user).toModel());
-        certificationService.send(user.getEmail(), user.getId(), user.getCertificationCode());
+        user = userRepository.save(user);
+        certificationServiceImpl.send(user.getEmail(), user.getId(), user.getCertificationCode());
         return user;
     }
 
