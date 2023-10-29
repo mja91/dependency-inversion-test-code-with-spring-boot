@@ -43,6 +43,10 @@ public class UserController {
             .build();
     }
 
+    /*
+    * MyInfo와 관련된 API는 MyInfoController와 같이 따로 분리 가능하지만, 구성이 과하다고 판단되어 UserController에 포함시켰습니다.
+    * 반환 타입이 다를 경우 실 프로젝트에서는 분리하는 것이 좋다고 판단됩니다.
+     */
     @GetMapping("/me")
     public ResponseEntity<MyProfileResponseDto> getMyInfo(
         @Parameter(name = "EMAIL", in = ParameterIn.HEADER)
