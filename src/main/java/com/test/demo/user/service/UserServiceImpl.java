@@ -8,7 +8,6 @@ import com.test.demo.user.domain.User;
 import com.test.demo.user.domain.request.UserCreateDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
 import com.test.demo.user.domain.enums.UserStatus;
-import com.test.demo.user.infrastructure.entity.UserEntity;
 import com.test.demo.user.service.port.UserRepository;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Builder
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserReadService, UserCreateService, UserUpdateService, AuthenticationService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CertificationServiceImpl certificationServiceImpl;

@@ -5,7 +5,6 @@ import com.test.demo.user.domain.User;
 import com.test.demo.user.controller.response.MyProfileResponseDto;
 import com.test.demo.user.controller.response.UserResponseDto;
 import com.test.demo.user.domain.request.UserUpdateDto;
-import com.test.demo.user.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,24 +23,21 @@ import java.net.URI;
 @RestController
 public class UserController {
 
-    private final UserReadService userReadService;
-    private final UserCreateService userCreateService;
-    private final UserUpdateService userUpdateService;
-    private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @ResponseStatus
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> getUserById(@PathVariable long id) {
         return ResponseEntity
             .ok()
-            .body(UserResponseDto.from(userReadService.getById(id)));
+            .body(UserResponseDto.from(userService.getById(id)));
     }
 
     @GetMapping("/{id}/verify")
     public ResponseEntity<Void> verifyEmail(
         @PathVariable long id,
         @RequestParam String certificationCode) {
-        authenticationService.verifyEmail(id, certificationCode);
+        userService.verifyEmail(id, certificationCode);
         return ResponseEntity.status(HttpStatus.FOUND)
             .location(URI.create("http://localhost:3000"))
             .build();
@@ -52,8 +48,8 @@ public class UserController {
         @Parameter(name = "EMAIL", in = ParameterIn.HEADER)
         @RequestHeader("EMAIL") String email // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져온다.
     ) {
-        User user = userReadService.getByEmail(email);
-        authenticationService.login(user.getId());
+        User user = userService.getByEmail(email);
+        userService.login(user.getId());
         return ResponseEntity
             .ok()
             .body(MyProfileResponseDto.from(user));
@@ -66,8 +62,8 @@ public class UserController {
         @RequestHeader("EMAIL") String email, // 일반적으로 스프링 시큐리티를 사용한다면 UserPrincipal 에서 가져온다.
         @RequestBody UserUpdateDto userUpdateDto
     ) {
-        User user = userReadService.getByEmail(email);
-        user = userUpdateService.update(user.getId(), userUpdateDto);
+        User user = userService.getByEmail(email);
+        user = userService.update(user.getId(), userUpdateDto);
         return ResponseEntity
             .ok()
             .body(MyProfileResponseDto.from(user));
